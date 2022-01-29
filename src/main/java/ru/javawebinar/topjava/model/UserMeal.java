@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class UserMeal {
+
     private final LocalDateTime dateTime;
 
     private final String description;
@@ -29,7 +30,11 @@ public class UserMeal {
         return calories;
     }
 
-    public LocalDate getDate() {return getDateTime().toLocalDate();}
+    public LocalDate getDate() {
+        return getDateTime().toLocalDate();
+    }
 
-    public LocalTime getTime() {return getDateTime().toLocalTime();}
+    public LocalTime getTime() {
+        return getDateTime().toLocalTime();
+    }
 }
