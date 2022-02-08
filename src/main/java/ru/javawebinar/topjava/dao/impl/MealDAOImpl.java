@@ -47,12 +47,7 @@ public class MealDAOImpl implements MealDAO {
 
     @Override
     public void add(Meal meal) {
-        meals.put(meal.getId(), meal);
-    }
-
-    @Override
-    public void update(Meal meal) {
-        meals.put(meal.getId(), meal);
+        meals.put((long) meals.size() + 1, meal);
     }
 
     @Override

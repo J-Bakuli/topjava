@@ -10,12 +10,10 @@
 <hr>
 <h2>Meals</h2>
 <p><a href="meals?action=insert">Add Meal</a></p>
-<%--<jsp:useBean id="meals" scope="request" type="ru.javawebinar.topjava.web.MealServlet"/>--%>
 <style>
     table {
-        width: 35%;
+        width: 45%;
         border-collapse: collapse;
-        /*border: 1.6px solid black;*/
     }
 
     th, td {
@@ -24,7 +22,6 @@
 </style>
 <table border="1" cellpadding="8" cellspacing="0">
     <tr>
-        <%--<th>ID</th>--%>
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
@@ -36,13 +33,12 @@
             <c:set var="color" value="red"/>
         </c:if>
         <tr style="color: ${color}">
-          <%--  <td><c:out value="${meal.id}"/></td>--%>
             <fmt:parseDate value="${meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both"/>
             <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/></td>
             <td><c:out value="${meal.description}"/></td>
             <td><c:out value="${meal.calories}"/></td>
-            <td><a href="meals?action=edit&mealId=<c:out value="${meal.id}"/>">Update</a></td>
-            <td><a href="meals?action=delete&mealId=<c:out value="${meal.id}"/>">Delete</a></td>
+            <td><a href="meals?action=edit&id=<c:out value="${meal.id}"/>">Update</a></td>
+            <td><a href="meals?action=delete&id=<c:out value="${meal.id}"/>">Delete</a></td>
         </tr>
     </c:forEach>
 </table>
