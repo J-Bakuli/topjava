@@ -1,9 +1,9 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.dao.impl.MealDAOImpl;
+import ru.javawebinar.topjava.dao.MealDaoInMemory;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.MealsTo;
+import ru.javawebinar.topjava.model.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletException;
@@ -22,17 +22,16 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
 
-    private static final Logger log = getLogger(MealServlet.class);
-    private static final int CALORIES_PER_DAY = 2000;
-    private static final String NEW_MEALS_PATH = "add_update_meal.jsp";
-    private static final String ALL_MEALS_PATH = "meals.jsp";
-    private static MealDAOImpl dao;
-    private static String forward = null;
+    private final Logger log = getLogger(MealServlet.class);
+    private final int CALORIES_PER_DAY = 2000;
+    private final String NEW_MEALS_PATH = "addUpdateMeal.jsp";
+    private final String ALL_MEALS_PATH = "meals.jsp";
+    private MealDaoInMemory dao;
+    private String forward = null;
 
     @Override
     public void init() throws ServletException {
-        super.init();
-        dao = new MealDAOImpl();
+        dao = new MealDaoInMemory();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException {
@@ -58,7 +57,7 @@ public class MealServlet extends HttpServlet {
             case "edit":
                 log.debug("MealServlet doGet, edit");
                 String editId = request.getParameter("id");
-                Meal meal = dao.get(Integer.parseInt(editId));
+                Meal meal = dao.get(Long.parseLong(editId));
                 request.setAttribute("meal", meal);
                 forward = NEW_MEALS_PATH;
                 break;
@@ -74,10 +73,10 @@ public class MealServlet extends HttpServlet {
         request.getRequestDispatcher(forward).forward(request, response);
     }
 
-    private List<MealsTo> getMealsTo() {
+    private List<MealTo> getMealsTo() {
         List<Meal> meals = dao.getAll();
-        List<MealsTo> filteredWithExceeded = MealsUtil.filteredByStreams(meals, LocalTime.MIN, LocalTime.MAX, CALORIES_PER_DAY);
-        filteredWithExceeded.sort(Comparator.comparing(MealsTo::getDateTime));
+        List<MealTo> filteredWithExceeded = MealsUtil.filteredByStreams(meals, LocalTime.MIN, LocalTime.MAX, CALORIES_PER_DAY);
+        filteredWithExceeded.sort(Comparator.comparing(MealTo::getDateTime));
         return filteredWithExceeded;
     }
 
@@ -99,8 +98,7 @@ public class MealServlet extends HttpServlet {
             log.debug("MealServlet doPost, edit");
             Meal meal = dao.get(Integer.parseInt(id));
             Meal newMeal = new Meal(dateTime, description, Integer.parseInt(calories));
-            dao.remove(meal);
-            dao.add(newMeal);
+            dao.update(meal, newMeal);
         }
         request.setAttribute("meals", getMealsTo());
         request.getRequestDispatcher(ALL_MEALS_PATH).forward(request, response);

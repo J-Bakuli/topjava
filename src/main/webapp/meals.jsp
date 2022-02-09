@@ -22,6 +22,7 @@
 </style>
 <table border="1" cellpadding="8" cellspacing="0">
     <tr>
+        <th>ID</th>
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
@@ -33,8 +34,9 @@
             <c:set var="color" value="red"/>
         </c:if>
         <tr style="color: ${color}">
+            <td><c:out value="${meal.id}"></c:out></td>
             <fmt:parseDate value="${meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both"/>
-            <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/></td>
+            <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${parsedDateTime}"/></td>
             <td><c:out value="${meal.description}"/></td>
             <td><c:out value="${meal.calories}"/></td>
             <td><a href="meals?action=edit&id=<c:out value="${meal.id}"/>">Update</a></td>

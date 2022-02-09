@@ -12,10 +12,18 @@
 <form method="POST" action='meals' name="formAddMeal">
     <table>
         <tr>
+            <td>ID</td>
+            <td><input
+                    type="number" name="id" required
+                    value="<c:out value="${meal.id}" />"/>
+            </td>
+        </tr>
+        <tr>
             <td>DateTime</td>
             <td><input
                     type="datetime-local" name="dateTime" required
-                    value="<c:out value="${meal.dateTime}" />"/></td>
+                    value="<c:out value="${meal.dateTime}" />"/>
+            </td>
         </tr>
         <tr>
             <td>Description</td>

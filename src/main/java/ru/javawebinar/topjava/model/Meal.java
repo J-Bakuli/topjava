@@ -3,18 +3,17 @@ package ru.javawebinar.topjava.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class Meal {
-    private static AtomicLong idGenerator = new AtomicLong(0);
+public class Meal implements IdGenerator{
+    private long id;
 
     private final LocalDateTime dateTime;
 
     private final String description;
 
     private final int calories;
-
-    private final long id;
 
     public Meal(LocalDateTime dateTime, String description, int calories) {
         this.id = idGenerator.incrementAndGet();
@@ -23,8 +22,19 @@ public class Meal {
         this.calories = calories;
     }
 
+    public Meal(long id, LocalDateTime dateTime, String description, int calories) {
+        this.id = id;
+        this.dateTime = dateTime;
+        this.description = description;
+        this.calories = calories;
+    }
+
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public LocalDateTime getDateTime() {
@@ -46,4 +56,21 @@ public class Meal {
     public LocalTime getTime() {
         return dateTime.toLocalTime();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MealTo that = (MealTo) o;
+        return /*id == that.getId() &&*/
+                calories == that.getCalories() &&
+                Objects.equals(dateTime, that.getDateTime()) &&
+                Objects.equals(description, that.getDescription());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dateTime, description, calories); //w/o id ПЛОХО
+    }
+
 }
