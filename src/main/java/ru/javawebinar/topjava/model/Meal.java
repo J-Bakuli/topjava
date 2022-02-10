@@ -4,9 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 
-public class Meal implements IdGenerator{
+public class Meal implements IdGenerator {
     private long id;
 
     private final LocalDateTime dateTime;
@@ -16,7 +15,7 @@ public class Meal implements IdGenerator{
     private final int calories;
 
     public Meal(LocalDateTime dateTime, String description, int calories) {
-        this.id = idGenerator.incrementAndGet();
+        this.id = generateId();
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
@@ -64,13 +63,13 @@ public class Meal implements IdGenerator{
         MealTo that = (MealTo) o;
         return /*id == that.getId() &&*/
                 calories == that.getCalories() &&
-                Objects.equals(dateTime, that.getDateTime()) &&
-                Objects.equals(description, that.getDescription());
+                        Objects.equals(dateTime, that.getDateTime()) &&
+                        Objects.equals(description, that.getDescription());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dateTime, description, calories); //w/o id ПЛОХО
+        return Objects.hash(dateTime, description, calories); //w/o id, to change
     }
 
 }

@@ -14,7 +14,7 @@
         <tr>
             <td>ID</td>
             <td><input
-                    type="number" name="id" required
+                    readonly="readonly" type="number" name="id"
                     value="<c:out value="${meal.id}" />"/>
             </td>
         </tr>

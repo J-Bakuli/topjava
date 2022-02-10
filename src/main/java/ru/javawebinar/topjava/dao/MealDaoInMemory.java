@@ -7,7 +7,6 @@ import ru.javawebinar.topjava.web.MealServlet;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,8 +47,7 @@ public class MealDaoInMemory implements MealDao {
         long id = meal.getId();
         if (meal.hashCode() == newMeal.hashCode()) {
             return null;
-        }
-        else {
+        } else {
             log.debug("MealDao, update contains key");
             Meal updatedMeal = new Meal(id, newMeal.getDateTime(), newMeal.getDescription(), newMeal.getCalories());
             meals.put(id, updatedMeal);

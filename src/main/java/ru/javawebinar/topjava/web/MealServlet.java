@@ -35,6 +35,7 @@ public class MealServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException {
+        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         log.debug("MealServlet doGet, all meals list");
         request.setAttribute("meals", getMealsTo());
@@ -56,10 +57,10 @@ public class MealServlet extends HttpServlet {
                 break;
             case "edit":
                 log.debug("MealServlet doGet, edit");
-                String editId = request.getParameter("id");
-                Meal meal = dao.get(Long.parseLong(editId));
-                request.setAttribute("meal", meal);
+                long editId = Long.parseLong(request.getParameter("id"));
+                Meal meal = dao.get(editId);
                 forward = NEW_MEALS_PATH;
+                request.setAttribute("meal", meal);
                 break;
             case "insert":
                 log.debug("MealServlet doGet, insert");
@@ -86,18 +87,18 @@ public class MealServlet extends HttpServlet {
 
         String id = request.getParameter("id");
         String description = request.getParameter("description");
-        String calories = request.getParameter("calories");
+        int calories = Integer.parseInt(request.getParameter("calories"));
         String mealDateTime = request.getParameter("dateTime");
         LocalDateTime dateTime = LocalDateTime.parse(mealDateTime, DateTimeFormatter.ISO_DATE_TIME);
 
         if (id == null || id.isEmpty()) {
             log.debug("MealServlet doPost, add");
-            Meal newMeal = new Meal(dateTime, description, Integer.parseInt(calories));
+            Meal newMeal = new Meal(dateTime, description, calories);
             dao.add(newMeal);
         } else {
             log.debug("MealServlet doPost, edit");
             Meal meal = dao.get(Integer.parseInt(id));
-            Meal newMeal = new Meal(dateTime, description, Integer.parseInt(calories));
+            Meal newMeal = new Meal(dateTime, description, calories);
             dao.update(meal, newMeal);
         }
         request.setAttribute("meals", getMealsTo());
