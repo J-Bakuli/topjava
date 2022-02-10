@@ -12,9 +12,9 @@
 <form method="POST" action='meals' name="formAddMeal">
     <table>
         <tr>
-            <td>ID</td>
+            <%--<td>ID</td>--%>
             <td><input
-                    readonly="readonly" type="number" name="id"
+                    type="hidden" type="number" name="id"
                     value="<c:out value="${meal.id}" />"/>
             </td>
         </tr>

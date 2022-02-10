@@ -34,7 +34,7 @@
             <c:set var="color" value="red"/>
         </c:if>
         <tr style="color: ${color}">
-       <%--     <td><c:out value="${meal.id}"></c:out></td>--%>
+                    <%--   <td><c:out value="${meal.id}"></c:out></td>--%>
             <fmt:parseDate value="${meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both"/>
             <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${parsedDateTime}"/></td>
             <td><c:out value="${meal.description}"/></td>
