@@ -12,7 +12,6 @@
 <form method="POST" action='meals' name="formAddMeal">
     <table>
         <tr>
-            <%--<td>ID</td>--%>
             <td><input
                     type="hidden" type="number" name="id"
                     value="<c:out value="${meal.id}" />"/>
