@@ -52,8 +52,7 @@ public class MealServlet extends HttpServlet {
                 log.debug("MealServlet doGet, delete");
                 long deleteId = Long.parseLong(request.getParameter("id"));
                 dao.remove(deleteId);
-                forward = ALL_MEALS_PATH;
-                request.setAttribute("meals", getMealsTo());
+                response.sendRedirect("meals");
                 break;
             case "edit":
                 log.debug("MealServlet doGet, edit");
@@ -61,17 +60,19 @@ public class MealServlet extends HttpServlet {
                 Meal meal = dao.get(editId);
                 forward = NEW_MEALS_PATH;
                 request.setAttribute("meal", meal);
+                request.getRequestDispatcher(forward).forward(request, response);
                 break;
             case "insert":
                 log.debug("MealServlet doGet, insert");
                 forward = NEW_MEALS_PATH;
+                request.getRequestDispatcher(forward).forward(request, response);
                 break;
             default:
                 log.debug("MealServlet doGet, default");
                 forward = ALL_MEALS_PATH;
+                request.getRequestDispatcher(forward).forward(request, response);
                 break;
         }
-        request.getRequestDispatcher(forward).forward(request, response);
     }
 
     private List<MealTo> getMealsTo() {
