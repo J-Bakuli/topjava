@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -16,61 +17,78 @@ import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryMealRepository implements MealRepository {
-    private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
-
-    private final Map<Integer, Meal> repository = new ConcurrentHashMap<>();
+    private static final Logger log = LoggerFactory.getLogger(InMemoryMealRepository.class);
+    private final Map<Integer, MealDataBase> repository = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.meals.forEach(meal -> save(meal, 1));
+        MealsUtil.meals.forEach(this::save);
+    }
+
+    private void save(Meal meal) {
+        save(meal, SecurityUtil.authUserId());
     }
 
     @Override
-    public Meal save(Meal meal, Integer userId) {
+    public Meal save(Meal meal, int userId) {
         log.info("save{}", userId);
+        MealDataBase mdb = new MealDataBase(userId, meal);
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             meal.setUserId(userId);
-            repository.put(meal.getId(), meal);
-            System.out.println(meal.getId()); //for testing
-            log.debug("saved {}, meal");
+            repository.put(meal.getId(), mdb);
             return meal;
         }
-        // handle case: update, but not present in storage
-        meal.setUserId(userId);
-        Meal updatedMeal = repository.computeIfPresent(meal.getId(),
-                (id, oldMeal) -> oldMeal.getUserId().equals(userId) ? meal : oldMeal);
-        System.out.println(updatedMeal); //for testing
         log.debug("saved {}", meal);
-        return updatedMeal;
+        // handle case: update, but not present in storage
+        return repository.getOrDefault(repository.computeIfPresent(meal.getId(),
+                (id, oldMeal) -> mdb), mdb).meal;
     }
 
     @Override
-    public boolean delete(int id, Integer userId) {
+    public boolean delete(int id, int userId) {
         log.info("delete {}", id);
-        System.out.println(get(id, userId)); //for testing
         return repository.remove(id, get(id, userId));
     }
 
     @Override
-    public Meal get(int id, Integer userId) {
+    public Meal get(int id, int userId) {
         log.info("get {}", id);
-        Meal meal = repository.getOrDefault(id, new Meal(null, null, 0));
-        return userId.equals(meal.getUserId()) ? meal : null;
+        return isKeyFromUserId(repository.get(id).key, userId) ? repository.get(id).meal : null;
     }
 
     @Override
-    public List<Meal> getAll(Integer userId) {
-        log.info("getAll {}");
-        System.out.println(repository.values().parallelStream() //for testing
-                .filter(meal -> userId.equals(meal.getUserId()))
-                .sorted(Comparator.comparing(Meal::getDate).reversed())
-                .collect(Collectors.toList()));
+    public List<Meal> getAll(int userId) {
+        log.info("getAll {}", userId);
 
         return repository.values().parallelStream()
-                .filter(meal -> userId.equals(meal.getUserId()))
+                .filter(mealDataBase -> isKeyFromUserId(mealDataBase.key, userId))
+                .map(mealDataBase -> mealDataBase.meal)
                 .sorted(Comparator.comparing(Meal::getDate).reversed())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Meal> getAllFilteredDuringDay(int userId) {
+        log.info("getAllFilteredDuringDay {}", userId);
+        return repository.values().parallelStream()
+                .map(mealDataBase -> mealDataBase.meal)
+                .sorted(Comparator.comparing(Meal::getDate).reversed())
+                .collect(Collectors.toList());
+    }
+
+    private boolean isKeyFromUserId(int key, int userId) {
+        return key == userId;
+    }
+
+    private static class MealDataBase {
+        private final int key;
+        private final Meal meal;
+
+        private MealDataBase(int userId, Meal meal) {
+            this.key = userId;
+            this.meal = meal;
+        }
     }
 }
 

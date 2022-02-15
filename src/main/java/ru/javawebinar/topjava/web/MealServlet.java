@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
@@ -19,8 +20,14 @@ import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
+    //ConfigurableApplicationContext appCtx;
 
     private MealRestController mealRestController;
+
+/*    @Override
+    public void init() {
+        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+    }*/
 
     @Override
     public void init(ServletConfig config) {
@@ -81,4 +88,8 @@ public class MealServlet extends HttpServlet {
         String paramId = Objects.requireNonNull(request.getParameter("id"));
         return Integer.parseInt(paramId);
     }
+
+/*    public void destroy() {
+        appCtx.close();
+    }*/
 }

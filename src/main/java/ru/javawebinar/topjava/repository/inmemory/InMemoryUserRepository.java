@@ -16,15 +16,15 @@ import java.util.stream.Collectors;
 public class InMemoryUserRepository implements UserRepository {
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
     private final AtomicInteger counter = new AtomicInteger(0);
-    private final Map<Integer, User> repository = new ConcurrentHashMap<>();
+    private static final Map<Integer, User> repository = new ConcurrentHashMap<>();
 
     {
         List<User> userList = new ArrayList<>();
-        userList.add(new User(null, "Albert", "albert@mail.ru", "qwhi876!skljj", Role.ADMIN));
-        userList.add(new User(null, "Judy", "judy@mail.ru", "ksd99229", Role.USER));
-        userList.add(new User(null, "Abba", "abba@mail.ru", "898w7dd23'", Role.USER));
-        userList.add(new User(null, "Kirill", "kirill@mail.ru", "HIHLADZ*^!", Role.USER));
-        userList.add(new User(null, "Sveta", "sveta@mail.ru", ";OQEU**_897!%", Role.USER));
+        userList.add(new User(null, "Abba", "8", "qwhi876!skljj", Role.ADMIN));
+        userList.add(new User(null, "Bob", "2", "ksd99229", Role.USER));
+        userList.add(new User(null, "Abba", "4", "898w7dd23'", Role.USER));
+        userList.add(new User(null, "Kirill", "4", "HIHLADZ*^!", Role.USER));
+        userList.add(new User(null, "Sveta", "5", ";OQEU**_897!%", Role.USER));
         userList.forEach(this::save);
     }
 
@@ -57,7 +57,7 @@ public class InMemoryUserRepository implements UserRepository {
         log.info("getAll");
         return repository.values().stream()
                 .sorted(Comparator.comparing(User::getName))
-                .sorted(Comparator.comparing(User::getEmail))
+                .sorted(Comparator.comparing(User::getName).thenComparing(User::getEmail))
                 .collect(Collectors.toList());
     }
 
