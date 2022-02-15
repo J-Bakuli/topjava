@@ -3,13 +3,12 @@ package ru.javawebinar.topjava;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.Role;
-import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository;
 import ru.javawebinar.topjava.web.meal.MealRestController;
-import ru.javawebinar.topjava.web.user.AdminRestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 
 public class SpringMain {
@@ -31,7 +30,11 @@ public class SpringMain {
             mealRestController.get(2);
             mealRestController.getAllTo();
             mealRestController.create(new Meal(LocalDateTime.of(2022, Month.FEBRUARY, 15, 14, 30), "Еда другого юзера", 4000));
-
+            mealRestController.getByFilteredToDateTime(1,
+                    LocalDate.of(2020, Month.JANUARY, 30),
+                    LocalDate.of(2020, Month.JANUARY, 31),
+                    LocalTime.of(10, 00),
+                    LocalTime.of(20, 00));
         }
     }
 }

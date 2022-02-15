@@ -45,9 +45,4 @@ public class MealService {
         log.info("getAll for userId {}", userId);
         return repository.getAll(userId);
     }
-
-/*    public List<MealTo> getAll(int userId, int caloriesPerDayLimit) {
-        log.info("getAll {} with calories limit {}", userId, caloriesPerDayLimit);
-        return MealsUtil.getTos(repository.getAll(userId), caloriesPerDayLimit); //TODO to remove at the end
-    }*/
 }

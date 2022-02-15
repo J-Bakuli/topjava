@@ -32,12 +32,10 @@ public class MealRestController {
         return MealsUtil.getTos(service.getAll(authUserId()), authUserCaloriesPerDay());
     }
 
-    public List<MealTo> getByFilteredToDate(int UserId, LocalDate startDate, LocalDate endDate) {
-        return MealsUtil.getFilteredToDate(service.getAll(authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY, startDate, endDate);
-    }
-
-    public List<MealTo> getByFilteredToTime(int UserId, LocalTime startTime, LocalTime endTime) {
-        return MealsUtil.getFilteredToTime(service.getAll(authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY, startTime, endTime);
+    public List<MealTo> getByFilteredToDateTime(int UserId, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+        log.info("getFiltered by DateTime {} {} {} {}", startDate, endDate, startTime, endTime);
+        System.out.println(MealsUtil.getFilteredToDateTime(service.getAll(authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY, startDate, endDate, startTime, endTime)); //TODO to remove after testing
+        return MealsUtil.getFilteredToDateTime(service.getAll(authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY, startDate, endDate, startTime, endTime);
     }
 
     public void delete(int id) {

@@ -30,12 +30,11 @@ public class MealsUtil {
         return filterByPredicate(meals, caloriesPerDay, meal -> true);
     }
 
-    public static List<MealTo> getFilteredToDate(List<Meal> meals, int caloriesPerDay, LocalDate startDate, LocalDate endDate) {
-        return filterByPredicate(meals, caloriesPerDay, meal -> DateTimeUtil.isBetween(meal.getDate(), startDate, endDate));
-    }
-
-    public static List<MealTo> getFilteredToTime(List<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
-        return filterByPredicate(meals, caloriesPerDay, meal -> DateTimeUtil.isBetween(meal.getTime(), startTime, endTime));
+    public static List<MealTo> getFilteredToDateTime(List<Meal> meals, int caloriesPerDay, LocalDate startDate, LocalDate endDate,
+                                                     LocalTime startTime, LocalTime endTime) {
+        return filterByPredicate(meals, caloriesPerDay,
+                meal -> DateTimeUtil.isBetween(meal.getDate(), startDate, endDate) &&
+                        DateTimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
     }
 
     public static List<MealTo> filterByPredicate(List<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
