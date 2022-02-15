@@ -19,7 +19,7 @@ import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
-    //ConfigurableApplicationContext appCtx;
+/*    ConfigurableApplicationContext appCtx;*/
 
     private MealRestController mealRestController;
 
@@ -88,7 +88,7 @@ public class MealServlet extends HttpServlet {
         return Integer.parseInt(paramId);
     }
 
-/*    public void destroy() {
-        appCtx.close();
+/*   public void destroy() {
+        super.destroy();
     }*/
 }

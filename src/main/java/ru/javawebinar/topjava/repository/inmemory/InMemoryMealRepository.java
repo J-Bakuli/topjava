@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.util.Comparator;
@@ -35,7 +36,6 @@ public class InMemoryMealRepository implements MealRepository {
         MealDataBase mdb = new MealDataBase(userId, meal);
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
-            meal.setUserId(userId);
             repository.put(meal.getId(), mdb);
             return meal;
         }
