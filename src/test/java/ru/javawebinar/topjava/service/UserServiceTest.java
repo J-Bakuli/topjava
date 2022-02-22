@@ -28,8 +28,6 @@ import static ru.javawebinar.topjava.UserTestData.*;
 public class UserServiceTest {
 
     static {
-        // Only for postgres driver logging
-        // It uses java.util.logging and logged via jul-to-slf4j bridge
         SLF4JBridgeHandler.install();
     }
 
@@ -42,8 +40,8 @@ public class UserServiceTest {
         Integer newId = created.getId();
         User newUser = getNew();
         newUser.setId(newId);
-        assertMatch(created, newUser);
-        assertMatch(service.get(newId), newUser);
+        UserTestData.assertMatch(created, newUser);
+        UserTestData.assertMatch(service.get(newId), newUser);
     }
 
     @Test
@@ -66,7 +64,7 @@ public class UserServiceTest {
     @Test
     public void get() {
         User user = service.get(USER_ID);
-        assertMatch(user, UserTestData.user);
+        UserTestData.assertMatch(user, UserTestData.user);
     }
 
     @Test
@@ -77,14 +75,14 @@ public class UserServiceTest {
     @Test
     public void getByEmail() {
         User user = service.getByEmail("admin@gmail.com");
-        assertMatch(user, admin);
+        UserTestData.assertMatch(user, admin);
     }
 
     @Test
     public void update() {
         User updated = getUpdated();
         service.update(updated);
-        assertMatch(service.get(USER_ID), getUpdated());
+        UserTestData.assertMatch(service.get(USER_ID), getUpdated());
     }
 
     @Test
