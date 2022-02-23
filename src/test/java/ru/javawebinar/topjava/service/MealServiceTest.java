@@ -9,8 +9,11 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.MealTestData;
+import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
+
+import java.util.List;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -39,13 +42,37 @@ public class MealServiceTest {
     }
 
     @Test
+    public void create() throws Exception {
+        Meal newMeal = getCreated();
+        Meal created = service.create(getCreated(), USER_ID);
+        Integer newId = created.getId();
+        newMeal.setId(newId);
+        assertMatch(created, newMeal);
+        assertMatch(service.get(newId, USER_ID), newMeal);
+    }
+
+    @Test
+    public void get() {
+        Meal meal = service.get(meals.get(0).getId(), USER_ID);
+        MealTestData.assertMatch(meal, meals.get(0));
+    }
+
+    @Test
     public void deleteNotFound() throws Exception {
         assertThrows(NotFoundException.class, () -> service.delete(3, USER_ID));
     }
 
     @Test
     public void getAll() throws Exception {
-        MealTestData.assertMatch(service.getAll(USER_ID), meals);
+        List<Meal> all = service.getAll(USER_ID);
+        MealTestData.assertMatch(all, meals);
+    }
+
+    @Test
+    public void update() throws Exception {
+        Meal updated = getUpdated();
+        service.update(updated, USER_ID);
+        assertMatch(service.get(MEAL_ID, USER_ID), updated);
     }
 
     @Test

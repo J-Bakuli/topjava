@@ -29,7 +29,7 @@ public class JdbcMealRepository implements MealRepository {
     @Autowired
     public JdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.insertMeal = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("users")
+                .withTableName("meals")
                 .usingGeneratedKeyColumns("id");
 
         this.jdbcTemplate = jdbcTemplate;
@@ -50,7 +50,7 @@ public class JdbcMealRepository implements MealRepository {
             meal.setId(newKey.intValue());
         } else {
             if (namedParameterJdbcTemplate.update(
-                    "UPDATE meals SET date_time=:dateTime, description=:description, calories=:calories WHERE id=:id AND user_Id=:uder_Id", map) == 0) {
+                    "UPDATE meals SET date_time=:dateTime, description=:description, calories=:calories WHERE id=:id AND user_Id=:userId", map) == 0) {
                 return null;
             }
         }
@@ -59,7 +59,7 @@ public class JdbcMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id, int userId) {
-        return jdbcTemplate.update("DELETE FROM meals WHERE id=? AND user_id=?", ROW_MAPPER, id, userId) != 0;
+        return jdbcTemplate.update("DELETE FROM meals WHERE id=? AND user_id=?", id, userId) != 0;
     }
 
     @Override
