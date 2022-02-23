@@ -36,7 +36,7 @@ public class MealTestData {
     }
 
     public static Meal getUpdated() {
-        return new Meal(MEAL_ID+6, Meal4.getDateTime(), "Updated завтрак", 890);
+        return new Meal(MEAL_ID + 6, Meal4.getDateTime(), "Updated завтрак", 890);
     }
 
     public static void assertMatch(Meal actual, Meal expected) {

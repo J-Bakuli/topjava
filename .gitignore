@@ -6,3 +6,5 @@ log
 *.patch
 
 
+/hs_err_pid5208.log
+/replay_pid5208.log
