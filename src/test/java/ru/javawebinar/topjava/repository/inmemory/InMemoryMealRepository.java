@@ -29,7 +29,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     {
         InMemoryBaseRepository<Meal> userMeals = new InMemoryBaseRepository<>();
-        MealTestData.meals.forEach(meal -> userMeals.map.put(meal.getId(), meal));
+        MealTestData.userMeals.forEach(meal -> userMeals.map.put(meal.getId(), meal));
         usersMealsMap.put(USER_ID, userMeals);
     }
 
