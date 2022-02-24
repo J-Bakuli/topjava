@@ -64,8 +64,7 @@ public class MealServiceTest {
     @Test
     public void getAll() {
         List<Meal> all = service.getAll(USER_ID);
-        List<Meal> userMealsToCompare = Arrays.asList(userMeal7, userMeal6, userMeal5, userMeal4, userMeal3, userMeal2, userMeal1);
-        assertMatch(all, userMealsToCompare);
+        assertMatch(all, userMeals);
     }
 
     @Test
