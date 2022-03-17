@@ -25,7 +25,7 @@
               p:driverClassName="org.hsqldb.jdbcDriver"
               p:url="${database.url}"
               p:username="${database.username}"
-              p:password="${database.password"/>
+              p:password="${database.password}"/>
     </beans>
 
     <beans profile="postgres">
